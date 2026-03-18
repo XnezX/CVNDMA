@@ -18,6 +18,8 @@ import {
   FaEnvelope,
   FaMoon,
   FaSun,
+  FaCopy,
+  FaCheck,
 } from "react-icons/fa";
 
 const reveal = {
@@ -109,6 +111,13 @@ function App() {
 
   const [activeIndex, setActiveIndex] = useState(1);
   const [openCert, setOpenCert] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("danielma1507@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   const [lightbox, setLightbox] = useState<string | null>(null);
 
   useEffect(() => {
@@ -137,9 +146,13 @@ function App() {
           }
         >
           {theme === "light" ? (
-            <><FaMoon aria-hidden="true" /> Modo oscuro</>
+            <>
+              <FaMoon aria-hidden="true" /> Modo oscuro
+            </>
           ) : (
-            <><FaSun aria-hidden="true" /> Modo claro</>
+            <>
+              <FaSun aria-hidden="true" /> Modo claro
+            </>
           )}
         </button>
         <motion.div
@@ -162,15 +175,12 @@ function App() {
           <motion.p className="subheadline" variants={heroItem}>
             Hola, soy
           </motion.p>
-          <motion.h1 variants={heroItem}>Nestor Daniel</motion.h1>
+          <motion.h1 variants={heroItem}>Nestor Daniel Molina</motion.h1>
           <motion.p className="tagline" variants={heroItem}>
-            Desarrollador Frontend - React &amp; UI moderno.
+            Desarrollador Frontend - React &amp; UI .
           </motion.p>
           <motion.div className="links" variants={heroItem}>
-            <a href="#projects" className="button">
-              Ver proyectos
-            </a>
-            <a href="/cv.pdf" className="button outline">
+            <a href="/CVNDMA/CV-NestorDanielMolina.pdf" target="_blank" rel="noopener noreferrer" className="button outline">
               Descargar CV
             </a>
           </motion.div>
@@ -301,14 +311,19 @@ function App() {
           {certifications.map((cert, i) => {
             const isOpen = openCert === i;
             return (
-              <div key={i} className={`accordion-item${isOpen ? " accordion-item--open" : ""}`}>
+              <div
+                key={i}
+                className={`accordion-item${isOpen ? " accordion-item--open" : ""}`}
+              >
                 <button
                   className="accordion-header"
                   onClick={() => setOpenCert(isOpen ? null : i)}
                   aria-expanded={isOpen}
                 >
                   <span className="accordion-title">{cert.title}</span>
-                  <span className="accordion-meta">{cert.institution} · {cert.year}</span>
+                  <span className="accordion-meta">
+                    {cert.institution} · {cert.year}
+                  </span>
                   <motion.span
                     className="accordion-icon"
                     animate={{ rotate: isOpen ? 180 : 0 }}
@@ -353,9 +368,21 @@ function App() {
       >
         <h2>Contactame</h2>
         <div className="contact-row">
-          <a href="mailto:danielma1507@gmail.com" className="social">
-            <FaEnvelope aria-hidden="true" /> Email
-          </a>
+          <div className="social email-row">
+            <FaEnvelope aria-hidden="true" />
+            <span className="email-text">danielma1507@gmail.com</span>
+            <button
+              className="copy-btn"
+              onClick={copyEmail}
+              aria-label="Copiar email"
+            >
+              {copied ? (
+                <FaCheck aria-hidden="true" />
+              ) : (
+                <FaCopy aria-hidden="true" />
+              )}
+            </button>
+          </div>
           <a
             href="https://github.com/XnezX"
             target="_blank"
@@ -375,9 +402,7 @@ function App() {
         </div>
       </motion.section>
 
-      <footer className="footer">
-        © 2026 Nestor Daniel • CV Web minimalista
-      </footer>
+      <footer className="footer">© Nestor Daniel Molina • CV Web</footer>
 
       <AnimatePresence>
         {lightbox && (

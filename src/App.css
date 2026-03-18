@@ -334,6 +334,34 @@ h1 {
   background: var(--card);
 }
 
+.email-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.email-text {
+  font-size: 0.9rem;
+}
+
+.copy-btn {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.copy-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
 .contact-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

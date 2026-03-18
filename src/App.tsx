@@ -22,45 +22,83 @@ import {
   FaCheck,
 } from "react-icons/fa";
 
-const reveal = {
-  hidden: { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
+type Lang = "es" | "en";
 
-const heroContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.18 } },
-};
-
-const heroItem = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+const translations = {
+  es: {
+    greeting: "Hola, soy",
+    tagline: "Desarrollador Frontend - React & UI.",
+    downloadCV: "Descargar CV",
+    aboutTitle: "Sobre mí",
+    aboutText:
+      "Desarrollador Web Frontend con experiencia práctica en React.js, JavaScript, Material UI, HTML y CSS, aplicada en entornos productivos como sistemas CRM para contact centers. He participado en la integración de funcionalidades frontend-backend y en la personalización de Vicidial (PHP) para operaciones reales de call center. Cuento con conocimientos básicos de SQL Server y experiencia en soporte técnico de nivel 1. Actualmente expando mis habilidades hacia backend con Node.js, con enfoque en desarrollo full-stack y mejora continua.",
+    projectsTitle: "Proyectos destacados",
+    technologies: "Tecnologías:",
+    viewDemo: "Ver demo",
+    inDevelopment: "En desarrollo",
+    certificationsTitle: "Certificaciones",
+    viewCert: "Ver certificado",
+    contactTitle: "Contáctame",
+    darkMode: "Modo oscuro",
+    lightMode: "Modo claro",
+    prevProject: "Proyecto anterior",
+    nextProject: "Proyecto siguiente",
+    goToProject: "Ir al proyecto",
+    copyEmail: "Copiar email",
+    footer: "CV Web",
+  },
+  en: {
+    greeting: "Hi, I'm",
+    tagline: "Frontend Developer - React & UI.",
+    downloadCV: "Download CV",
+    aboutTitle: "About me",
+    aboutText:
+      "Frontend Web Developer with hands-on experience in React.js, JavaScript, Material UI, HTML and CSS, applied in productive environments such as CRM systems for contact centers. I have participated in frontend-backend functionality integration and in the customization of Vicidial (PHP) for real call center operations. I have basic knowledge of SQL Server and experience in level 1 technical support. I am currently expanding my skills towards backend with Node.js, focusing on full-stack development and continuous improvement.",
+    projectsTitle: "Featured projects",
+    technologies: "Technologies:",
+    viewDemo: "View demo",
+    inDevelopment: "In development",
+    certificationsTitle: "Certifications",
+    viewCert: "View certificate",
+    contactTitle: "Contact me",
+    darkMode: "Dark mode",
+    lightMode: "Light mode",
+    prevProject: "Previous project",
+    nextProject: "Next project",
+    goToProject: "Go to project",
+    copyEmail: "Copy email",
+    footer: "Web CV",
+  },
 };
 
 const projects = [
   {
     title: "PulseDesk CRM",
-    description:
-      "Landing page de un CRM moderno con diseño limpio y animaciones fluidas.",
+    desc: {
+      es: "Landing page de un CRM moderno con diseño limpio y animaciones fluidas.",
+      en: "Landing page for a modern CRM with clean design and smooth animations.",
+    },
     tech: "React, Vite, Supabase",
     link: "https://xnezx.github.io/pulsedesk-landing/",
-    linkText: "Ver demo",
     preview: previewPulsedesk,
   },
   {
     title: "Roomigo",
-    description:
-      "App para gestionar gastos y tareas compartidas entre los habitantes de un hogar.",
+    desc: {
+      es: "App para gestionar gastos y tareas compartidas entre los habitantes de un hogar.",
+      en: "App to manage shared expenses and tasks among housemates.",
+    },
     tech: "React Native",
     link: "#",
-    linkText: "En desarrollo",
     preview: previewRoomigo,
-    badge: "En desarrollo",
+    badge: true,
   },
   {
     title: "CRM Producción",
-    description:
-      "Aplicación de métricas con gráficos dinámicos, gestion de cuentas y filtros avanzados.",
+    desc: {
+      es: "Aplicación de métricas con gráficos dinámicos, gestión de cuentas y filtros avanzados.",
+      en: "Metrics app with dynamic charts, account management and advanced filters.",
+    },
     tech: "React, Recharts, Tailwind",
     link: "#",
     preview: previewDashboard,
@@ -82,6 +120,21 @@ const certifications = [
   },
 ];
 
+const reveal = {
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const heroContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.18 } },
+};
+
+const heroItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 function getCarouselPos(index: number, active: number, total: number) {
   const pos = (((index - active) % total) + total) % total;
   if (pos === 0) return { x: 0, scale: 1, opacity: 1, zIndex: 3, rotateY: 0 };
@@ -92,12 +145,13 @@ function getCarouselPos(index: number, active: number, total: number) {
 
 function App() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [lang, setLang] = useState<Lang>("es");
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setTheme(savedTheme);
-    }
+    if (savedTheme === "light" || savedTheme === "dark") setTheme(savedTheme);
+    const savedLang = localStorage.getItem("lang");
+    if (savedLang === "es" || savedLang === "en") setLang(savedLang);
   }, []);
 
   useEffect(() => {
@@ -105,20 +159,26 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  useEffect(() => {
+    localStorage.setItem("lang", lang);
+  }, [lang]);
+
+  const t = (key: keyof (typeof translations)["es"]) => translations[lang][key];
+
+  const toggleTheme = () =>
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-  };
+  const toggleLang = () => setLang((prev) => (prev === "es" ? "en" : "es"));
 
   const [activeIndex, setActiveIndex] = useState(1);
   const [openCert, setOpenCert] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
+  const [lightbox, setLightbox] = useState<string | null>(null);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("danielma1507@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-  const [lightbox, setLightbox] = useState<string | null>(null);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -135,26 +195,35 @@ function App() {
   const { scrollY } = useScroll();
   const avatarSize = useTransform(scrollY, [0, 280], [200, 110]);
   const avatarBorderRadius = useTransform(scrollY, [0, 280], [16, 50]);
+
   return (
     <main className="cv-container">
       <section id="hero" className="section hero-section">
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label={
-            theme === "light" ? "Activar modo oscuro" : "Activar modo claro"
-          }
-        >
-          {theme === "light" ? (
-            <>
-              <FaMoon aria-hidden="true" /> Modo oscuro
-            </>
-          ) : (
-            <>
-              <FaSun aria-hidden="true" /> Modo claro
-            </>
-          )}
-        </button>
+        <div className="hero-controls">
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label={theme === "light" ? t("darkMode") : t("lightMode")}
+          >
+            {theme === "light" ? (
+              <>
+                <FaMoon aria-hidden="true" /> {t("darkMode")}
+              </>
+            ) : (
+              <>
+                <FaSun aria-hidden="true" /> {t("lightMode")}
+              </>
+            )}
+          </button>
+          <button
+            className="theme-toggle lang-toggle"
+            onClick={toggleLang}
+            aria-label="Cambiar idioma"
+          >
+            {lang === "es" ? "EN" : "ES"}
+          </button>
+        </div>
+
         <motion.div
           className="inner"
           initial="hidden"
@@ -173,11 +242,11 @@ function App() {
             }}
           />
           <motion.p className="subheadline" variants={heroItem}>
-            Hola, soy
+            {t("greeting")}
           </motion.p>
           <motion.h1 variants={heroItem}>Nestor Daniel Molina</motion.h1>
           <motion.p className="tagline" variants={heroItem}>
-            Desarrollador Frontend - React &amp; UI.
+            {t("tagline")}
           </motion.p>
           <motion.div className="links" variants={heroItem}>
             <a
@@ -185,7 +254,7 @@ function App() {
               download
               className="button outline"
             >
-              Descargar CV
+              {t("downloadCV")}
             </a>
           </motion.div>
         </motion.div>
@@ -199,18 +268,8 @@ function App() {
         viewport={{ once: true }}
         variants={reveal}
       >
-        <h2>Sobre mí</h2>
-        <p>
-          Desarrollador Web Frontend con experiencia práctica en React.js,
-          JavaScript, Material UI, HTML y CSS, aplicada en entornos productivos
-          como sistemas CRM para contact centers. He participado en la
-          integración de funcionalidades frontend-backend y en la
-          personalización de Vicidial (PHP) para operaciones reales de call
-          center. Cuento con conocimientos básicos de SQL Server y experiencia
-          en soporte técnico de nivel 1. Actualmente expando mis habilidades
-          hacia backend con Node.js, con enfoque en desarrollo full-stack y
-          mejora continua.
-        </p>
+        <h2>{t("aboutTitle")}</h2>
+        <p>{t("aboutText")}</p>
         <div className="stack">
           <span>React</span>
           <span>JavaScript</span>
@@ -233,7 +292,7 @@ function App() {
         viewport={{ once: true }}
         variants={reveal}
       >
-        <h2>Proyectos destacados</h2>
+        <h2>{t("projectsTitle")}</h2>
         <div className="carousel">
           {projects.map((project, index) => {
             const anim = getCarouselPos(index, activeIndex, projects.length);
@@ -254,27 +313,27 @@ function App() {
                   >
                     <img
                       src={project.preview}
-                      alt={`Preview de ${project.title}`}
+                      alt={`Preview ${project.title}`}
                       className="card-preview-img"
                     />
                   </motion.div>
                   {project.badge && (
-                    <span className="card-badge">{project.badge}</span>
+                    <span className="card-badge">{t("inDevelopment")}</span>
                   )}
                 </div>
                 <h3>{project.title}</h3>
-                <p>{project.description}</p>
-                <small>Tecnologías: {project.tech}</small>
-                {!project.badge && (
+                <p>{project.desc[lang]}</p>
+                <small>
+                  {t("technologies")} {project.tech}
+                </small>
+                {!project.badge && project.link.startsWith("http") && (
                   <a
                     href={project.link}
                     className="card-link"
-                    {...(project.link.startsWith("http") && {
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                    })}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {project.linkText}
+                    {t("viewDemo")}
                   </a>
                 )}
               </motion.article>
@@ -285,7 +344,7 @@ function App() {
           <button
             className="carousel-btn"
             onClick={prev}
-            aria-label="Proyecto anterior"
+            aria-label={t("prevProject")}
           >
             &#8592;
           </button>
@@ -295,14 +354,14 @@ function App() {
                 key={i}
                 className={`carousel-dot${i === activeIndex ? " carousel-dot--active" : ""}`}
                 onClick={() => setActiveIndex(i)}
-                aria-label={`Ir al proyecto ${i + 1}`}
+                aria-label={`${t("goToProject")} ${i + 1}`}
               />
             ))}
           </div>
           <button
             className="carousel-btn"
             onClick={next}
-            aria-label="Proyecto siguiente"
+            aria-label={t("nextProject")}
           >
             &#8594;
           </button>
@@ -317,7 +376,7 @@ function App() {
         viewport={{ once: true }}
         variants={reveal}
       >
-        <h2>Certificaciones</h2>
+        <h2>{t("certificationsTitle")}</h2>
         <div className="accordion">
           {certifications.map((cert, i) => {
             const isOpen = openCert === i;
@@ -358,7 +417,7 @@ function App() {
                         rel="noopener noreferrer"
                         className="button"
                       >
-                        Ver certificado
+                        {t("viewCert")}
                       </a>
                     </motion.div>
                   )}
@@ -377,7 +436,7 @@ function App() {
         viewport={{ once: true }}
         variants={reveal}
       >
-        <h2>Contactame</h2>
+        <h2>{t("contactTitle")}</h2>
         <div className="contact-row">
           <div className="social email-row">
             <FaEnvelope aria-hidden="true" />
@@ -385,7 +444,7 @@ function App() {
             <button
               className="copy-btn"
               onClick={copyEmail}
-              aria-label="Copiar email"
+              aria-label={t("copyEmail")}
             >
               {copied ? (
                 <FaCheck aria-hidden="true" />
@@ -413,7 +472,7 @@ function App() {
         </div>
       </motion.section>
 
-      <footer className="footer">© Nestor Daniel Molina • CV Web</footer>
+      <footer className="footer">© Nestor Daniel Molina • {t("footer")}</footer>
 
       <AnimatePresence>
         {lightbox && (

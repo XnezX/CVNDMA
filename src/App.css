@@ -78,10 +78,16 @@ body {
   padding: 2rem 1.5rem;
 }
 
-.hero-section .theme-toggle {
+.hero-controls {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lang-toggle {
+  font-size: 0.78rem;
 }
 
 .avatar {

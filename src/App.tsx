@@ -55,6 +55,7 @@ const projects = [
     link: "#",
     linkText: "En desarrollo",
     preview: previewRoomigo,
+    badge: "En desarrollo",
   },
   {
     title: "CRM Producción",
@@ -176,13 +177,12 @@ function App() {
           </motion.p>
           <motion.h1 variants={heroItem}>Nestor Daniel Molina</motion.h1>
           <motion.p className="tagline" variants={heroItem}>
-            Desarrollador Frontend - React &amp; UI .
+            Desarrollador Frontend - React &amp; UI.
           </motion.p>
           <motion.div className="links" variants={heroItem}>
             <a
               href="/CVNDMA/CV-NestorDanielMolina.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              download
               className="button outline"
             >
               Descargar CV
@@ -245,31 +245,38 @@ function App() {
                 animate={anim}
                 transition={{ duration: 0.45, ease: "easeInOut" }}
               >
-                <motion.div
-                  className="card-preview"
-                  whileHover={{ scale: 1.06 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => setLightbox(project.preview)}
-                >
-                  <img
-                    src={project.preview}
-                    alt={`Preview de ${project.title}`}
-                    className="card-preview-img"
-                  />
-                </motion.div>
+                <div className="card-preview-wrapper">
+                  <motion.div
+                    className="card-preview"
+                    whileHover={{ scale: 1.06 }}
+                    transition={{ duration: 0.25 }}
+                    onClick={() => setLightbox(project.preview)}
+                  >
+                    <img
+                      src={project.preview}
+                      alt={`Preview de ${project.title}`}
+                      className="card-preview-img"
+                    />
+                  </motion.div>
+                  {project.badge && (
+                    <span className="card-badge">{project.badge}</span>
+                  )}
+                </div>
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
                 <small>Tecnologías: {project.tech}</small>
-                <a
-                  href={project.link}
-                  className="card-link"
-                  {...(project.link.startsWith("http") && {
-                    target: "_blank",
-                    rel: "noopener noreferrer",
-                  })}
-                >
-                  {project.linkText}
-                </a>
+                {!project.badge && (
+                  <a
+                    href={project.link}
+                    className="card-link"
+                    {...(project.link.startsWith("http") && {
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                    })}
+                  >
+                    {project.linkText}
+                  </a>
+                )}
               </motion.article>
             );
           })}

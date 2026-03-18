@@ -416,4 +416,26 @@ h1 {
     padding: 1.1rem;
   }
 
+  /* Carrusel: ocultar cards laterales fuera de pantalla */
+  .carousel {
+    overflow: hidden;
+    height: 320px;
+  }
+
+  /* Email: permitir wrap en pantallas pequeñas */
+  .email-row {
+    white-space: normal;
+    flex-wrap: wrap;
+  }
+
+  /* Accordion: evitar desborde del meta */
+  .accordion-meta {
+    white-space: normal;
+    text-align: right;
+  }
+
+  /* Hero: reducir padding para el botón de tema */
+  .hero-section {
+    padding-top: 3rem;
+  }
 }

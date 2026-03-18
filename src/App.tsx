@@ -42,7 +42,7 @@ const projects = [
     title: "PulseDesk CRM",
     description:
       "Landing page de un CRM moderno con diseño limpio y animaciones fluidas.",
-    tech: "React, Vite, Framer Motion",
+    tech: "React, Vite, Supabase",
     link: "https://xnezx.github.io/pulsedesk-landing/",
     linkText: "Ver demo",
     preview: previewPulsedesk,
@@ -50,19 +50,18 @@ const projects = [
   {
     title: "Roomigo",
     description:
-      "App para gestionar gastos y tareas compartidas entre los habitantes de un hogar. En desarrollo.",
-    tech: "React, Node.js, TypeScript",
+      "App para gestionar gastos y tareas compartidas entre los habitantes de un hogar.",
+    tech: "React Native",
     link: "#",
     linkText: "En desarrollo",
     preview: previewRoomigo,
   },
   {
-    title: "Dashboard Analytics",
+    title: "CRM Producción",
     description:
-      "Aplicación de métricas con gráficos dinámicos y filtros avanzados.",
+      "Aplicación de métricas con gráficos dinámicos, gestion de cuentas y filtros avanzados.",
     tech: "React, Recharts, Tailwind",
     link: "#",
-    linkText: "Ver código",
     preview: previewDashboard,
   },
 ];
@@ -180,7 +179,12 @@ function App() {
             Desarrollador Frontend - React &amp; UI .
           </motion.p>
           <motion.div className="links" variants={heroItem}>
-            <a href="/CVNDMA/CV-NestorDanielMolina.pdf" target="_blank" rel="noopener noreferrer" className="button outline">
+            <a
+              href="/CVNDMA/CV-NestorDanielMolina.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="button outline"
+            >
               Descargar CV
             </a>
           </motion.div>
